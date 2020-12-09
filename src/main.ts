@@ -26,6 +26,9 @@ import {
 import { getConfig } from "./config";
 import { getSecrets } from "./secrets";
 import pLimit from "p-limit";
+import { HttpsProxyAgent } from "https-proxy-agent";
+
+const proxy = process.env.https_proxy;
 
 export async function run(): Promise<void> {
   try {
@@ -39,7 +42,8 @@ export async function run(): Promise<void> {
     }
 
     const octokit = DefaultOctokit({
-      auth: config.GITHUB_TOKEN
+      auth: config.GITHUB_TOKEN,
+      agent: proxy ? new HttpsProxyAgent(proxy) : undefined
     });
 
     let repos: Repository[];
