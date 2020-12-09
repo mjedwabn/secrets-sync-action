@@ -43,7 +43,9 @@ export async function run(): Promise<void> {
 
     const octokit = DefaultOctokit({
       auth: config.GITHUB_TOKEN,
-      agent: proxy ? new HttpsProxyAgent(proxy) : undefined
+      request: {
+        agent: proxy ? new HttpsProxyAgent(proxy) : undefined
+      }
     });
 
     let repos: Repository[];
